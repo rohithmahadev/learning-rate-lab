@@ -3,11 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="A 5-minute card game that reveals how fast you change your mind.">
+<meta name="description" content="A 4-minute card game that shows how your mind learns. A scientifically grounded demonstration, not an assessment.">
 <title>Learning Rate Lab</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Atkinson+Hyperlegible:wght@400;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,500;0,6..72,600;0,6..72,700;1,6..72,500;1,6..72,600&family=Atkinson+Hyperlegible:wght@400;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <style>
 html, body { margin: 0; }
 /* Layout: a lab notebook on graph paper. One centered column; the game is two playing cards; results open with a big "learning style" card, then visual tiles, then detail. Highlighter yellow marks what matters. */
@@ -26,22 +26,23 @@ html, body { margin: 0; }
   --flame: #d9481f;
   --hi: #ffd84d;
   --hi-ink: #3a2f00;
+  --hl: #ffd84d;
   --win: #11804c;
   --shadow: rgba(18, 26, 51, 0.28);
-  --font-display: "Bricolage Grotesque", "Arial Rounded MT Bold", system-ui, sans-serif;
+  --font-display: "Newsreader", "Iowan Old Style", Georgia, "Times New Roman", serif;
   --font-body: "Atkinson Hyperlegible", system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-data: "IBM Plex Mono", ui-monospace, Menlo, monospace;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
     --paper: #0c1120; --grid: rgba(150, 170, 255, 0.06); --surface: #141b31; --ink: #eef1fb; --muted: #9ba4c4; --line: #263050; --soft: #1b2442;
-    --cobalt: #8399ff; --deep: #1c2a72; --deep-ink: #f3f5ff; --deep-muted: #b9c2ee; --flame: #ff7b52; --hi: #ffd84d; --hi-ink: #3a2f00; --win: #48d293; --shadow: rgba(0, 0, 0, 0.5);
+    --cobalt: #8399ff; --deep: #1c2a72; --deep-ink: #f3f5ff; --deep-muted: #b9c2ee; --flame: #ff7b52; --hi: #ffd84d; --hi-ink: #3a2f00; --hl: rgba(255, 216, 77, 0.38); --win: #48d293; --shadow: rgba(0, 0, 0, 0.5);
     color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
   --paper: #0c1120; --grid: rgba(150, 170, 255, 0.06); --surface: #141b31; --ink: #eef1fb; --muted: #9ba4c4; --line: #263050; --soft: #1b2442;
-  --cobalt: #8399ff; --deep: #1c2a72; --deep-ink: #f3f5ff; --deep-muted: #b9c2ee; --flame: #ff7b52; --hi: #ffd84d; --hi-ink: #3a2f00; --win: #48d293; --shadow: rgba(0, 0, 0, 0.5);
+  --cobalt: #8399ff; --deep: #1c2a72; --deep-ink: #f3f5ff; --deep-muted: #b9c2ee; --flame: #ff7b52; --hi: #ffd84d; --hi-ink: #3a2f00; --hl: rgba(255, 216, 77, 0.38); --win: #48d293; --shadow: rgba(0, 0, 0, 0.5);
   color-scheme: dark;
 }
 * { box-sizing: border-box; }
@@ -55,12 +56,13 @@ body {
   padding-block: 20px 64px;
 }
 main { max-width: 760px; margin: 0 auto; display: grid; gap: 32px; }
-h1, h2, h3 { font-family: var(--font-display); font-weight: 800; line-height: 1.05; margin: 0; text-wrap: balance; letter-spacing: -0.02em; }
+h1, h2, h3 { font-family: var(--font-display); font-weight: 600; line-height: 1.08; margin: 0; text-wrap: balance; letter-spacing: -0.015em; }
+.accent { font-style: italic; font-weight: 500; color: var(--cobalt); }
 h1 { font-size: clamp(2.5rem, 8vw, 4.3rem); }
 h2 { font-size: clamp(1.6rem, 4.5vw, 2.1rem); }
-h3 { font-size: 1.25rem; font-weight: 700; letter-spacing: -0.01em; }
+h3 { font-size: 1.35rem; font-weight: 600; letter-spacing: -0.005em; }
 p { margin: 0; max-width: 62ch; }
-.hl { background: linear-gradient(transparent 58%, var(--hi) 58%, var(--hi) 92%, transparent 92%); padding: 0 2px; }
+.hl { background: linear-gradient(transparent 58%, var(--hl) 58%, var(--hl) 92%, transparent 92%); padding: 0 2px; }
 .eyebrow { font-family: var(--font-data); font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
 .muted { color: var(--muted); }
 .small { font-size: 0.9rem; }
@@ -69,7 +71,7 @@ p { margin: 0; max-width: 62ch; }
 .row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
 
 /* Brand bar */
-.brand { display: flex; align-items: center; gap: 10px; font-family: var(--font-display); font-weight: 800; font-size: 1.05rem; letter-spacing: -0.01em; }
+.brand { display: flex; align-items: center; gap: 10px; font-family: var(--font-display); font-weight: 600; font-size: 1.2rem; letter-spacing: -0.01em; }
 .brand svg { width: 34px; height: 22px; }
 
 /* Buttons */
@@ -86,7 +88,7 @@ button { font: inherit; cursor: pointer; color: inherit; }
 /* Intro */
 .hero { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 24px; align-items: center; }
 .hero-copy { display: grid; gap: 18px; min-width: 0; }
-.chip { justify-self: start; display: inline-flex; align-items: center; gap: 8px; background: var(--hi); color: var(--hi-ink); border-radius: 999px; padding: 6px 12px; font-family: var(--font-data); font-size: 0.78rem; font-weight: 500; }
+.chip { justify-self: start; display: inline-flex; align-items: center; gap: 8px; background: var(--soft); color: var(--cobalt); border-radius: 999px; padding: 6px 12px; font-family: var(--font-data); font-size: 0.78rem; font-weight: 500; }
 .lede { font-size: 1.15rem; }
 .deck { position: relative; height: 270px; }
 .mini { position: absolute; width: 150px; aspect-ratio: 5 / 7; border-radius: 16px; background: var(--surface); border: 2px solid var(--line); box-shadow: 0 18px 30px -18px var(--shadow); display: grid; place-items: center; }
@@ -113,7 +115,7 @@ kbd { font-family: var(--font-data); font-size: 0.82em; border: 1px solid var(--
 @keyframes pop { 40% { transform: scale(1.12); } }
 .track { height: 8px; background: var(--soft); border-radius: 4px; overflow: hidden; }
 .track > i { display: block; height: 100%; width: 0; background: var(--cobalt); border-radius: 4px; transition: width 250ms ease; }
-.prompt { text-align: center; font-family: var(--font-display); font-weight: 700; font-size: clamp(1.3rem, 4vw, 1.7rem); }
+.prompt { text-align: center; font-family: var(--font-display); font-weight: 600; font-size: clamp(1.3rem, 4vw, 1.7rem); }
 .cards { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(12px, 3vw, 24px); width: 100%; max-width: 520px; margin: 0 auto; }
 .card { border: 0; padding: 0; background: none; aspect-ratio: 5 / 7; max-width: 100%; perspective: 900px; border-radius: 20px; }
 .inner { display: block; position: relative; width: 100%; height: 100%; transform-style: preserve-3d; transition: transform 230ms ease; }
@@ -121,19 +123,61 @@ kbd { font-family: var(--font-data); font-size: 0.82em; border: 1px solid var(--
 .card.flipped .inner { transform: rotateY(180deg); }
 .face { position: absolute; inset: 0; border-radius: 20px; backface-visibility: hidden; -webkit-backface-visibility: hidden; background: var(--surface); border: 2px solid var(--line); box-shadow: 0 16px 28px -18px var(--shadow); display: grid; place-items: center; align-content: center; gap: 12px; padding: 14px; }
 .front svg.sym { width: 50%; }
-.front .nm { font-family: var(--font-display); font-weight: 800; font-size: clamp(1.05rem, 3.5vw, 1.35rem); }
+.front .nm { font-family: var(--font-display); font-weight: 600; font-size: clamp(1.05rem, 3.5vw, 1.35rem); }
 .front .idx { position: absolute; width: 18px; }
 .front .idx.tl { top: 14px; left: 14px; }
 .front .idx.br { bottom: 14px; right: 14px; transform: rotate(180deg); }
 .card:hover .front { border-color: var(--ink); }
 .back { transform: rotateY(180deg); }
-.back .big { font-family: var(--font-display); font-weight: 800; font-size: clamp(2.6rem, 9vw, 3.6rem); line-height: 1; }
+.back .big { font-family: var(--font-display); font-weight: 600; font-size: clamp(2.6rem, 9vw, 3.6rem); line-height: 1; }
 .back .res { font-family: var(--font-data); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.1em; }
 .card.win .back { background: var(--hi); border-color: var(--hi); color: var(--hi-ink); }
 .card.miss .back { background: var(--soft); color: var(--muted); }
-.card.dim .face { opacity: 0.45; }
+.card.ghost .back { background: var(--surface); border: 2px dashed var(--line); color: var(--muted); }
+.card.ghost.win .back { border-color: var(--hi); color: var(--ink); }
+.card.ghost .big { font-size: clamp(1.8rem, 6vw, 2.4rem); }
+.conf { text-align: center; justify-items: center; }
+.conf-ends { width: 100%; display: flex; justify-content: space-between; font-weight: 700; font-size: 0.95rem; }
+.conf-ends span { display: inline-flex; align-items: center; gap: 6px; }
+.conf-ends svg { width: 18px; height: 18px; }
+.conf-scale { width: 100%; display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 6px; }
+.cbtn { border: 2px solid var(--line); background: var(--surface); color: var(--ink); border-radius: 12px; padding: 14px 2px; font-size: 0.82rem; font-weight: 700; line-height: 1.15; overflow-wrap: normal; transition: transform 120ms; }
+.cbtn:hover { transform: translateY(-2px); }
+.cbtn:nth-child(1), .cbtn:nth-child(2), .cbtn:nth-child(3) { border-color: var(--cobalt); }
+.cbtn:nth-child(5), .cbtn:nth-child(6), .cbtn:nth-child(7) { border-color: var(--flame); }
+.cbtn:nth-child(1) { background: var(--cobalt); color: var(--surface); }
+.cbtn:nth-child(7) { background: var(--flame); color: var(--surface); }
+.cbtn.mid { background: var(--soft); }
+.cbtn:focus-visible { outline: 3px solid var(--cobalt); outline-offset: 2px; }
+.hbars { display: grid; gap: 12px; }
+.hrow { display: grid; grid-template-columns: minmax(0, 190px) minmax(0, 1fr) 64px; gap: 12px; align-items: center; }
+.hrow .t { font-size: 0.95rem; }
+.hrow .track2 { height: 14px; background: var(--soft); border-radius: 7px; overflow: hidden; }
+.hrow .track2 i { display: block; height: 100%; border-radius: 7px; background: var(--cobalt); }
+.hrow .track2 i.alt { background: var(--flame); }
+.hrow .track2 i.ok { background: var(--win); }
+.hrow .n { font-family: var(--font-data); font-size: 0.85rem; text-align: right; }
+@media (max-width: 640px) { .hrow { grid-template-columns: minmax(0, 1fr) 64px; } .hrow .track2 { grid-column: 1 / -1; grid-row: 2; } .cbtn { font-size: 0.7rem; padding: 12px 0; border-radius: 10px; } .conf-scale { gap: 4px; } }
 .keys { text-align: center; font-size: 0.9rem; color: var(--muted); }
 .break { text-align: center; justify-items: center; padding-block: 40px; }
+.ready { gap: 20px; }
+.ready a { color: var(--cobalt); }
+.pledges { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+.pledge { background: var(--soft); border-radius: 18px; padding: 18px; display: grid; gap: 6px; align-content: start; min-width: 0; }
+.pledge b { font-family: var(--font-display); font-size: 1.1rem; }
+.pic { width: 38px; height: 38px; border-radius: 12px; background: var(--cobalt); color: var(--surface); display: grid; place-items: center; }
+.pic svg { width: 22px; height: 22px; }
+.ready h2 { font-size: clamp(1.8rem, 5vw, 2.5rem); }
+.notbox { border: 2px solid var(--ink); border-radius: 18px; padding: 18px 20px; display: grid; gap: 12px; }
+.notlist { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.notlist li { display: grid; grid-template-columns: 28px 1fr; gap: 10px; align-items: start; }
+.notlist .x { width: 28px; height: 28px; border-radius: 50%; background: var(--flame); color: var(--surface); display: grid; place-items: center; font-size: 0.8rem; font-weight: 700; }
+.ack { display: flex; gap: 14px; align-items: flex-start; background: var(--soft); border: 2px solid var(--cobalt); border-radius: 16px; padding: 16px 18px; cursor: pointer; font-size: 1.02rem; }
+.ack input { width: 24px; height: 24px; margin: 1px 0 0; flex: none; accent-color: var(--cobalt); cursor: pointer; }
+.ack.err { border-color: var(--flame); }
+.ack.ok { border-color: var(--win); }
+.err-msg { color: var(--flame); font-weight: 700; font-size: 0.95rem; }
+@media (max-width: 640px) { .pledges { grid-template-columns: 1fr; } }
 
 /* Results */
 .loader { display: grid; gap: 14px; justify-items: center; text-align: center; padding-block: 60px; }
@@ -150,9 +194,9 @@ kbd { font-family: var(--font-data); font-size: 0.82em; border: 1px solid var(--
 .gauge { width: 100%; max-width: 320px; justify-self: center; }
 .gauge text { font-family: var(--font-data); }
 .needle { transform-origin: 160px 160px; transition: transform 1100ms cubic-bezier(.2,.9,.25,1.15); }
-.tiles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+.tiles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
 .tile { background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 20px; display: grid; gap: 8px; align-content: start; min-width: 0; }
-.tile .val { font-family: var(--font-display); font-weight: 800; font-size: 2.4rem; line-height: 1; letter-spacing: -0.02em; font-variant-numeric: tabular-nums lining-nums; }
+.tile .val { font-family: var(--font-display); font-weight: 600; font-size: 2.6rem; line-height: 1; letter-spacing: -0.01em; font-variant-numeric: tabular-nums lining-nums; }
 .tile .lab { font-size: 0.92rem; color: var(--muted); }
 .meter { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; }
 .meter i { height: 8px; border-radius: 4px; background: var(--soft); }
@@ -188,7 +232,7 @@ svg text { font-family: var(--font-data); fill: var(--muted); font-size: 11px; }
 .ax { stroke: var(--line); stroke-width: 1; }
 .formula { font-family: var(--font-data); font-size: 0.92rem; background: var(--soft); border-radius: 10px; padding: 10px 12px; overflow-wrap: anywhere; }
 details.panel { display: block; }
-details.panel summary { cursor: pointer; font-family: var(--font-display); font-weight: 700; font-size: 1.15rem; list-style: none; display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+details.panel summary { cursor: pointer; font-family: var(--font-display); font-weight: 600; font-size: 1.15rem; list-style: none; display: flex; justify-content: space-between; align-items: center; gap: 12px; }
 details.panel summary::-webkit-details-marker { display: none; }
 details.panel summary::after { content: "+"; font-family: var(--font-data); font-size: 1.3rem; color: var(--muted); }
 details.panel[open] summary::after { content: "–"; }
@@ -235,9 +279,9 @@ details.panel[open] summary::after { content: "–"; }
   <section id="v-intro" class="stack" style="gap:36px">
     <div class="hero">
       <div class="hero-copy">
-        <span class="chip">A 5-minute experiment</span>
-        <h1>How fast do you <span class="hl">change your mind?</span></h1>
-        <p class="lede">Pick between two cards for 160 quick rounds. One of them is lucky, until it isn't. Then see your learning style, measured with the same math brain scientists use.</p>
+        <span class="chip">A 4-minute experiment</span>
+        <h1>How fast do you <span class="accent">change your mind?</span></h1>
+        <p class="lede">Pick between two cards for 120 quick rounds. One of them is lucky, until it isn't. Then see your learning style, measured with the same math brain scientists use.</p>
         <div class="row">
           <button id="btn-start" class="btn primary big">Start the experiment</button>
           <button id="btn-example" class="btn">See a sample result</button>
@@ -250,9 +294,9 @@ details.panel[open] summary::after { content: "–"; }
     </div>
 
     <div class="steps">
-      <div class="step"><span class="n">01</span><b>Play</b><span class="small muted">Pick a card each round and try to win as many points as you can.</span></div>
-      <div class="step"><span class="n">02</span><b>Get modeled</b><span class="small muted">A learning model replays your 160 choices to see how you update.</span></div>
-      <div class="step"><span class="n">03</span><b>Meet your style</b><span class="small muted">Steady, balanced, or quick, and how you handle chaos.</span></div>
+      <div class="step"><span class="n">01</span><b>Play</b><span class="small muted">Pick a card each round. Now and then we'll ask how sure you are.</span></div>
+      <div class="step"><span class="n">02</span><b>Get modeled</b><span class="small muted">A learning model replays your 120 choices, your timing, and your gut calls.</span></div>
+      <div class="step"><span class="n">03</span><b>Meet your style</b><span class="small muted">How fast you update, how you handle chaos, and how well you know your own mind.</span></div>
     </div>
 
     <div class="panel">
@@ -260,16 +304,66 @@ details.panel[open] summary::after { content: "–"; }
       <ul class="facts">
         <li><span class="ic">80</span><span>At any moment, one card wins 80% of the time. The other wins only 20%.</span></li>
         <li><span class="ic">⇄</span><span>The lucky card secretly switches now and then. Nobody tells you when.</span></li>
-        <li><span class="ic">↵</span><span>Tap a card, or use <kbd>←</kbd> <kbd>→</kbd> (or <kbd>F</kbd> <kbd>J</kbd>). Trust your gut and keep a steady pace.</span></li>
+        <li><span class="ic">◐</span><span>After each pick, you'll also see what the other card would have done.</span></li>
+        <li><span class="ic">?</span><span>Every 10 rounds, a quick "how sure are you?" check.</span></li>
+        <li><span class="ic">↵</span><span>Tap a card, or use <kbd>←</kbd> <kbd>→</kbd> (or <kbd>F</kbd> <kbd>J</kbd>). We time each pick, so go at your natural pace.</span></li>
       </ul>
     </div>
-    <p class="small muted">Nothing you do here is saved or sent anywhere. It's a game, not a psychological test.</p>
+    <p class="small muted">A scientifically grounded demonstration, not an assessment. Nothing you do here is saved or sent anywhere.</p>
+  </section>
+
+  <!-- BEFORE YOU START -->
+  <section id="v-ready" class="stack" hidden>
+    <div class="panel ready">
+      <span class="chip">Important · please read before you play</span>
+      <h2>This is a demonstration, <span class="accent">not an assessment</span></h2>
+      <p class="lede">Learning Rate Lab is a scientifically grounded demonstration of how people learn from experience. It's built to help you understand your learning mind, never to judge it.</p>
+
+      <div class="notbox">
+        <h3>What this game is not</h3>
+        <ul class="notlist">
+          <li><span class="x" aria-hidden="true">✕</span><span><b>Not a test</b> of intelligence, ability, or personality.</span></li>
+          <li><span class="x" aria-hidden="true">✕</span><span><b>Not a diagnosis.</b> It says nothing about your mental health and isn't a substitute for a professional.</span></li>
+          <li><span class="x" aria-hidden="true">✕</span><span><b>Not a fixed label.</b> Results from one short game naturally vary from day to day.</span></li>
+        </ul>
+      </div>
+
+      <div class="pledges">
+        <div class="pledge">
+          <span class="pic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5 10 17l9-10" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          <b>No right or wrong answers</b>
+          <span class="small muted">Play the way that feels natural. There's no correct style to aim for.</span>
+        </div>
+        <div class="pledge">
+          <span class="pic" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="8" cy="9" r="3.2" fill="currentColor"/><polygon points="16,5 20,12 12,12" fill="currentColor"/><rect x="5" y="15" width="6" height="5" rx="1.2" fill="currentColor"/><circle cx="16" cy="17.5" r="2.6" fill="none" stroke="currentColor" stroke-width="2"/></svg></span>
+          <b>Every mind is unique</b>
+          <span class="small muted">Steady, balanced, and quick learners each have real strengths. Your result describes how you played today, not who you are.</span>
+        </div>
+        <div class="pledge">
+          <span class="pic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 3h6M10 3v6l-5 9a2 2 0 0 0 1.8 3h10.4a2 2 0 0 0 1.8-3l-5-9V3" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/></svg></span>
+          <b>Grounded in research</b>
+          <span class="small muted">The task and the learning model come from decades of research on how people update their beliefs.</span>
+        </div>
+      </div>
+
+      <label class="ack" id="ack-box" for="ack">
+        <input type="checkbox" id="ack">
+        <span>I understand this is a demonstration, <b>not an assessment</b>, and that there are no right or wrong answers.</span>
+      </label>
+      <p class="err-msg" id="ack-err" role="alert" hidden>Please tick the box above to confirm you've read this note.</p>
+
+      <div class="row">
+        <button id="btn-ready" class="btn primary big">I'm ready, let's play</button>
+        <button id="btn-back" class="btn">Back</button>
+      </div>
+      <p class="small muted">Built on Rescorla &amp; Wagner (1972), <a href="https://pubmed.ncbi.nlm.nih.gov/17676057/" target="_blank" rel="noopener">Behrens et al. (2007)</a>, <a href="https://discovery.ucl.ac.uk/id/eprint/1571632/" target="_blank" rel="noopener">Palminteri et al. (2017)</a>, and <a href="https://elifesciences.org/articles/49547" target="_blank" rel="noopener">Wilson &amp; Collins (2019)</a>. Nothing you do is saved or sent anywhere.</p>
+    </div>
   </section>
 
   <!-- GAME -->
   <section id="v-game" class="stack" style="gap:22px" hidden>
     <div class="hud">
-      <span class="mono" id="hud-round">Round 1 / 160</span>
+      <span class="mono" id="hud-round">Round 1 / 120</span>
       <span class="score" id="hud-score"><span class="coin" aria-hidden="true">1</span><span id="hud-points">0</span></span>
     </div>
     <div class="track" aria-hidden="true"><i id="hud-bar"></i></div>
@@ -303,9 +397,27 @@ details.panel[open] summary::after { content: "–"; }
     </div>
     <div id="halfway" class="panel break" hidden>
       <span class="chip">Halfway there</span>
-      <h2 id="half-title">80 rounds down</h2>
+      <h2 id="half-title">60 rounds down</h2>
       <p class="muted">Take a breath. The lucky card may still switch at any moment, so stay sharp.</p>
       <button class="btn primary big" id="btn-continue">Keep going</button>
+    </div>
+    <div id="confidence" class="panel conf" hidden>
+      <span class="chip">Quick check</span>
+      <h3>Which card is the lucky one right now?</h3>
+      <div class="conf-ends" aria-hidden="true">
+        <span><svg viewBox="0 0 100 100"><use href="#s-circle"/></svg>Circle</span>
+        <span>Triangle<svg viewBox="0 0 100 100"><use href="#s-tri"/></svg></span>
+      </div>
+      <div class="conf-scale" id="conf-scale">
+        <button class="cbtn" data-v="0.95" data-l="3" data-k="1" aria-label="Sure it's the circle">Sure</button>
+        <button class="cbtn" data-v="0.8" data-l="2" data-k="2" aria-label="Probably the circle">Likely</button>
+        <button class="cbtn" data-v="0.65" data-l="1" data-k="3" aria-label="Maybe the circle">Maybe</button>
+        <button class="cbtn mid" data-v="0.5" data-l="0" data-k="4" aria-label="No idea">No idea</button>
+        <button class="cbtn" data-v="0.35" data-l="1" data-k="5" aria-label="Maybe the triangle">Maybe</button>
+        <button class="cbtn" data-v="0.2" data-l="2" data-k="6" aria-label="Probably the triangle">Likely</button>
+        <button class="cbtn" data-v="0.05" data-l="3" data-k="7" aria-label="Sure it's the triangle">Sure</button>
+      </div>
+      <p class="keys">Keys <kbd>1</kbd> to <kbd>7</kbd>, left to right</p>
     </div>
     <p class="small muted" id="game-status" aria-live="polite" style="position:absolute;left:-9999px">Pick a card.</p>
   </section>
@@ -313,19 +425,21 @@ details.panel[open] summary::after { content: "–"; }
   <!-- RESULTS -->
   <section id="v-results" class="stack" style="gap:24px" hidden>
     <div class="loader" id="fitting">
-      <h3>Reading your 160 choices…</h3>
+      <h3>Reading your 120 choices…</h3>
       <div class="track" aria-hidden="true"><i></i></div>
-      <p class="small muted">Trying 75,000 versions of you to find the best match</p>
+      <p class="small muted">Trying thousands of versions of you to find the best match</p>
     </div>
     <div id="results-body" class="stack" style="gap:24px" hidden></div>
   </section>
 </main>
-
 <script id="core">
-/* ---------- Model core: task, Rescorla-Wagner + softmax, fitting ---------- */
-const N_STABLE = 80, N_VOL = 80, N_TRIALS = N_STABLE + N_VOL, P_GOOD = 0.8;
-const ALPHAS = Array.from({ length: 50 }, (_, i) => +(0.01 + i * 0.02).toFixed(2));
-const BETAS = Array.from({ length: 30 }, (_, i) => 0.3 * Math.pow(100, i / 29));
+/* ---------- Model core: task, Rescorla-Wagner with counterfactual updating + softmax, fitting ---------- */
+const N_HALF = 60, N_TRIALS = 120, P_GOOD = 0.8;
+const ALPHAS = Array.from({ length: 50 }, (_, i) => +(0.01 + i * 0.02).toFixed(2));        // 0.01 .. 0.99
+const ALPHAS_SPLIT = Array.from({ length: 33 }, (_, i) => +(0.01 + i * 0.03).toFixed(2));  // 0.01 .. 0.97
+const BETAS = Array.from({ length: 24 }, (_, i) => 0.3 * Math.pow(100, i / 23));          // 0.3 .. 30
+const WS = Array.from({ length: 11 }, (_, i) => i / 10);                                   // 0 .. 1
+const CONF_ROUNDS = Array.from({ length: 12 }, (_, i) => 5 + i * 10);                      // rating asked before rounds 6, 16, ... 116
 const LL_CUT = 1.92; // half of chi-square(1) at 95%: likelihood-ratio interval
 
 function mulberry32(seed) {
@@ -339,116 +453,116 @@ function mulberry32(seed) {
   };
 }
 
-// Stable half: one hidden switch near the middle. Changing half: a switch every 12-18 rounds.
-function makeBlock(kind, rng, startGood) {
+// kind 0 = calm (one hidden switch), kind 1 = chaotic (a switch every 10-14 rounds).
+function makeBlock(kind, rng, startGood, half = 0) {
   const out = [];
   let good = startGood;
   if (kind === 0) {
-    const flip = 30 + Math.floor(rng() * 21);
-    for (let t = 0; t < N_STABLE; t++) { if (t === flip) good = 1 - good; out.push({ block: 0, good }); }
+    const flip = 22 + Math.floor(rng() * 17);
+    for (let t = 0; t < N_HALF; t++) { if (t === flip) good = 1 - good; out.push({ block: 0, half, good }); }
   } else {
-    let left = 12 + Math.floor(rng() * 7);
-    for (let t = 0; t < N_VOL; t++) {
-      if (left === 0) { good = 1 - good; left = 12 + Math.floor(rng() * 7); }
-      left--; out.push({ block: 1, good });
+    let left = 10 + Math.floor(rng() * 5);
+    for (let t = 0; t < N_HALF; t++) {
+      if (left === 0) { good = 1 - good; left = 10 + Math.floor(rng() * 5); }
+      left--; out.push({ block: 1, half, good });
     }
   }
+  // Both cards get an outcome every round (the unpicked one is shown as "would have").
   out.forEach(tr => { tr.out = [0, 1].map(c => (rng() < (c === tr.good ? P_GOOD : 1 - P_GOOD) ? 1 : 0)); });
   return out;
 }
-function makeSchedule(rng) {
-  const s = makeBlock(0, rng, rng() < 0.5 ? 0 : 1);
-  const v = makeBlock(1, rng, 1 - s[s.length - 1].good); // the changing half opens with a switch
-  return s.concat(v);
+// Counterbalanced: calm half first or second, chosen at random per game.
+function makeSchedule(rng, order) {
+  const o = order || (rng() < 0.5 ? [0, 1] : [1, 0]);
+  const a = makeBlock(o[0], rng, rng() < 0.5 ? 0 : 1, 0);
+  const b = makeBlock(o[1], rng, 1 - a[a.length - 1].good, 1); // the second half opens with a switch
+  return a.concat(b);
 }
 
 function pChooseCircle(v0, v1, beta) { return 1 / (1 + Math.exp(-beta * (v0 - v1))); }
 
-function simulatePlayer(trials, aS, aV, beta, rng) {
-  let v = [0.5, 0.5];
-  const choices = [], rewards = [];
+// w scales how much the unpicked card's outcome is learned from (0 = ignored, 1 = as much as the picked card).
+function simulatePlayer(trials, aS, aV, beta, w, rng) {
+  const v = [0.5, 0.5], choices = [], rewards = [];
   for (const tr of trials) {
-    const c = rng() < pChooseCircle(v[0], v[1], beta) ? 0 : 1;
-    const r = tr.out[c];
+    const c = rng() < pChooseCircle(v[0], v[1], beta) ? 0 : 1, u = 1 - c;
     const a = tr.block === 0 ? aS : aV;
-    v[c] += a * (r - v[c]);
-    choices.push(c); rewards.push(r);
+    v[c] += a * (tr.out[c] - v[c]);
+    v[u] += w * a * (tr.out[u] - v[u]);
+    choices.push(c); rewards.push(tr.out[c]);
   }
   return { choices, rewards };
 }
 
-function logLik(ch, rw, blk, aS, aV, beta) {
-  let v0 = 0.5, v1 = 0.5, ll = 0;
-  for (let t = 0; t < ch.length; t++) {
-    const p0 = 1 / (1 + Math.exp(-beta * (v0 - v1)));
-    const p = ch[t] === 0 ? p0 : 1 - p0;
-    ll += Math.log(p < 1e-12 ? 1e-12 : p);
-    const a = blk[t] === 0 ? aS : aV;
-    if (ch[t] === 0) v0 += a * (rw[t] - v0); else v1 += a * (rw[t] - v1);
-  }
-  return ll;
+function dataArrays(trials, choices) {
+  return {
+    ch: choices,
+    rw: choices.map((c, t) => trials[t].out[c]),
+    ru: choices.map((c, t) => trials[t].out[1 - c]),
+    blk: trials.map(t => t.block),
+    half: trials.map(t => t.half)
+  };
 }
 
-function intervalFrom(profile) {
+// Log-likelihood of a stretch of choices, starting from values (v0, v1); returns [ll, v0, v1].
+function runLL(D, from, to, a, beta, w, v0, v1) {
+  let ll = 0;
+  const aw = a * w;
+  for (let t = from; t < to; t++) {
+    const p0 = 1 / (1 + Math.exp(-beta * (v0 - v1)));
+    const c = D.ch[t];
+    const p = c === 0 ? p0 : 1 - p0;
+    ll += Math.log(p < 1e-12 ? 1e-12 : p);
+    if (c === 0) { v0 += a * (D.rw[t] - v0); v1 += aw * (D.ru[t] - v1); }
+    else { v1 += a * (D.rw[t] - v1); v0 += aw * (D.ru[t] - v0); }
+  }
+  return [ll, v0, v1];
+}
+
+function intervalFrom(profile, grid) {
   let best = -Infinity, bi = 0;
   profile.forEach((x, i) => { if (x > best) { best = x; bi = i; } });
   let lo = bi, hi = bi;
   while (lo > 0 && profile[lo - 1] >= best - LL_CUT) lo--;
   while (hi < profile.length - 1 && profile[hi + 1] >= best - LL_CUT) hi++;
-  return { best: bi, lo, hi };
+  return { best: grid[bi], lo: grid[lo], hi: grid[hi] };
 }
 
-// One learning rate for the whole game (alpha, beta).
-function fitSingle(ch, rw, blk) {
-  let best = -Infinity, bi = 0, bk = 0;
-  const profA = ALPHAS.map(() => -Infinity);
-  for (let i = 0; i < ALPHAS.length; i++) for (let k = 0; k < BETAS.length; k++) {
-    const ll = logLik(ch, rw, blk, ALPHAS[i], ALPHAS[i], BETAS[k]);
+// One learning rate for the whole game: alpha, beta, w.
+function fitSingle(D) {
+  let best = -Infinity, bk = 0;
+  const profA = ALPHAS.map(() => -Infinity), profW = WS.map(() => -Infinity);
+  for (let i = 0; i < ALPHAS.length; i++) for (let k = 0; k < BETAS.length; k++) for (let m = 0; m < WS.length; m++) {
+    const ll = runLL(D, 0, D.ch.length, ALPHAS[i], BETAS[k], WS[m], 0.5, 0.5)[0];
     if (ll > profA[i]) profA[i] = ll;
-    if (ll > best) { best = ll; bi = i; bk = k; }
+    if (ll > profW[m]) profW[m] = ll;
+    if (ll > best) { best = ll; bk = k; }
   }
-  const iv = intervalFrom(profA);
-  return { alpha: ALPHAS[bi], beta: BETAS[bk], betaAtMax: bk === BETAS.length - 1, ll: best, lo: ALPHAS[iv.lo], hi: ALPHAS[iv.hi] };
+  const A = intervalFrom(profA, ALPHAS), W = intervalFrom(profW, WS);
+  return { alpha: A.best, lo: A.lo, hi: A.hi, w: W.best, wLo: W.lo, wHi: W.hi, beta: BETAS[bk], betaAtMax: bk === BETAS.length - 1, ll: best };
 }
 
-// Separate learning rates for the stable and changing halves, shared beta.
-function fitSplit(ch, rw, blk) {
-  let best = -Infinity, bi = 0, bj = 0, bk = 0;
-  const profS = ALPHAS.map(() => -Infinity), profV = ALPHAS.map(() => -Infinity);
-  const split = blk.indexOf(1) < 0 ? ch.length : blk.indexOf(1);
-  for (let i = 0; i < ALPHAS.length; i++) for (let k = 0; k < BETAS.length; k++) {
-    // The stable half depends only on (alpha_stable, beta): run it once and reuse its end state.
-    const beta = BETAS[k], aS = ALPHAS[i];
-    let v0 = 0.5, v1 = 0.5, ll1 = 0;
-    for (let t = 0; t < split; t++) {
-      const p0 = 1 / (1 + Math.exp(-beta * (v0 - v1)));
-      const p = ch[t] === 0 ? p0 : 1 - p0;
-      ll1 += Math.log(p < 1e-12 ? 1e-12 : p);
-      if (ch[t] === 0) v0 += aS * (rw[t] - v0); else v1 += aS * (rw[t] - v1);
-    }
-    for (let j = 0; j < ALPHAS.length; j++) {
-      const aV = ALPHAS[j];
-      let w0 = v0, w1 = v1, ll = ll1;
-      for (let t = split; t < ch.length; t++) {
-        const p0 = 1 / (1 + Math.exp(-beta * (w0 - w1)));
-        const p = ch[t] === 0 ? p0 : 1 - p0;
-        ll += Math.log(p < 1e-12 ? 1e-12 : p);
-        if (ch[t] === 0) w0 += aV * (rw[t] - w0); else w1 += aV * (rw[t] - w1);
-      }
-      if (ll > profS[i]) profS[i] = ll;
-      if (ll > profV[j]) profV[j] = ll;
-      if (ll > best) { best = ll; bi = i; bj = j; bk = k; }
+// Separate learning rates for the calm and chaotic halves (whatever their order), shared beta and w.
+function fitSplit(D) {
+  const n = D.ch.length, mid = D.half.indexOf(1) < 0 ? n : D.half.indexOf(1);
+  const firstIsCalm = D.blk[0] === 0;
+  let best = -Infinity, b1 = 0, b2 = 0, bk = 0, bm = 0;
+  const prof1 = ALPHAS_SPLIT.map(() => -Infinity), prof2 = ALPHAS_SPLIT.map(() => -Infinity);
+  for (let i = 0; i < ALPHAS_SPLIT.length; i++) for (let k = 0; k < BETAS.length; k++) for (let m = 0; m < WS.length; m++) {
+    const [ll1, v0, v1] = runLL(D, 0, mid, ALPHAS_SPLIT[i], BETAS[k], WS[m], 0.5, 0.5);
+    for (let j = 0; j < ALPHAS_SPLIT.length; j++) {
+      const ll = ll1 + runLL(D, mid, n, ALPHAS_SPLIT[j], BETAS[k], WS[m], v0, v1)[0];
+      if (ll > prof1[i]) prof1[i] = ll;
+      if (ll > prof2[j]) prof2[j] = ll;
+      if (ll > best) { best = ll; b1 = i; b2 = j; bk = k; bm = m; }
     }
   }
-  const s = intervalFrom(profS), v = intervalFrom(profV);
-  return {
-    aS: ALPHAS[bi], aV: ALPHAS[bj], beta: BETAS[bk], ll: best,
-    sLo: ALPHAS[s.lo], sHi: ALPHAS[s.hi], vLo: ALPHAS[v.lo], vHi: ALPHAS[v.hi]
-  };
+  const P1 = intervalFrom(prof1, ALPHAS_SPLIT), P2 = intervalFrom(prof2, ALPHAS_SPLIT);
+  const calm = firstIsCalm ? P1 : P2, chaos = firstIsCalm ? P2 : P1;
+  return { aS: calm.best, sLo: calm.lo, sHi: calm.hi, aV: chaos.best, vLo: chaos.lo, vHi: chaos.hi, beta: BETAS[bk], w: WS[bm], ll: best, calmFirst: firstIsCalm };
 }
 
-// The alpha whose estimate stays closest to a card's true win rate in each kind of world
-// (an observer watching every outcome of one card; averaged over many random games).
+// The alpha whose estimate stays closest to a card's true win rate in each kind of half.
 function bestAlphas(sims = 400, seed = 12345) {
   const rng = mulberry32(seed);
   const pick = kind => {
@@ -467,30 +581,37 @@ function bestAlphas(sims = 400, seed = 12345) {
   return { stable: pick(0), volatile: pick(1) };
 }
 
-// Parameter recovery: simulate players with known alpha, fit them, compare.
+function corr(xs, ys) {
+  const n = xs.length; if (n < 3) return null;
+  const mx = xs.reduce((s, x) => s + x, 0) / n, my = ys.reduce((s, y) => s + y, 0) / n;
+  let sxy = 0, sxx = 0, syy = 0;
+  for (let i = 0; i < n; i++) { sxy += (xs[i] - mx) * (ys[i] - my); sxx += (xs[i] - mx) ** 2; syy += (ys[i] - my) ** 2; }
+  return sxx && syy ? sxy / Math.sqrt(sxx * syy) : null;
+}
+
+// Parameter recovery: simulate players with known alpha and w, fit them, compare.
 function recovery(n = 40, seed = 999) {
   const rng = mulberry32(seed);
   const pts = [];
   for (let i = 0; i < n; i++) {
-    const aTrue = 0.05 + rng() * 0.8, bTrue = 3 + rng() * 9;
+    const aTrue = 0.05 + rng() * 0.8, bTrue = 3 + rng() * 9, wTrue = rng();
     const trials = makeSchedule(rng);
-    const sim = simulatePlayer(trials, aTrue, aTrue, bTrue, rng);
-    const fit = fitSingle(sim.choices, sim.rewards, trials.map(t => t.block));
-    pts.push({ aTrue, aFit: fit.alpha });
+    const sim = simulatePlayer(trials, aTrue, aTrue, bTrue, wTrue, rng);
+    const fit = fitSingle(dataArrays(trials, sim.choices));
+    pts.push({ aTrue, aFit: fit.alpha, wTrue, wFit: fit.w });
   }
-  const mx = pts.reduce((s, p) => s + p.aTrue, 0) / n, my = pts.reduce((s, p) => s + p.aFit, 0) / n;
-  let sxy = 0, sxx = 0, syy = 0;
-  pts.forEach(p => { sxy += (p.aTrue - mx) * (p.aFit - my); sxx += (p.aTrue - mx) ** 2; syy += (p.aFit - my) ** 2; });
-  return { pts, r: sxy / Math.sqrt(sxx * syy) };
+  return { pts, r: corr(pts.map(p => p.aTrue), pts.map(p => p.aFit)), rW: corr(pts.map(p => p.wTrue), pts.map(p => p.wFit)) };
 }
 
-function modelTrace(ch, rw, blk, aS, aV, beta) {
+// The model's read of the player on every round: chance of picking the circle.
+function modelTrace(D, aS, aV, beta, w) {
   let v0 = 0.5, v1 = 0.5;
   const p = [];
-  for (let t = 0; t < ch.length; t++) {
+  for (let t = 0; t < D.ch.length; t++) {
     p.push(pChooseCircle(v0, v1, beta));
-    const a = blk[t] === 0 ? aS : aV;
-    if (ch[t] === 0) v0 += a * (rw[t] - v0); else v1 += a * (rw[t] - v1);
+    const a = D.blk[t] === 0 ? aS : aV, aw = a * w;
+    if (D.ch[t] === 0) { v0 += a * (D.rw[t] - v0); v1 += aw * (D.ru[t] - v1); }
+    else { v1 += a * (D.rw[t] - v1); v0 += aw * (D.ru[t] - v0); }
   }
   return p;
 }
@@ -499,7 +620,7 @@ function modelTrace(ch, rw, blk, aS, aV, beta) {
 <script>
 /* ---------- UI ---------- */
 const $ = id => document.getElementById(id);
-const views = { intro: $("v-intro"), game: $("v-game"), results: $("v-results") };
+const views = { intro: $("v-intro"), ready: $("v-ready"), game: $("v-game"), results: $("v-results") };
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 function show(v) { Object.entries(views).forEach(([k, el]) => { el.hidden = k !== v; }); window.scrollTo(0, 0); }
 
@@ -507,10 +628,13 @@ let game = null;
 
 function startGame() {
   const rng = mulberry32((Math.random() * 2 ** 31) | 0);
-  game = { trials: makeSchedule(rng), t: 0, choices: [], rewards: [], points: 0, busy: false, paused: false };
-  $("play").hidden = false; $("halfway").hidden = true;
+  game = {
+    trials: makeSchedule(rng), t: 0, choices: [], rewards: [], points: 0,
+    rts: [], rtOk: [], conf: [], busy: false, paused: false, mode: "choose", tStart: 0, fresh: true
+  };
+  $("halfway").hidden = true;
   renderHud(); show("game");
-  $("card-0").focus({ preventScroll: true });
+  nextRound();
 }
 
 function renderHud() {
@@ -519,52 +643,112 @@ function renderHud() {
   $("hud-bar").style.width = `${(game.t / N_TRIALS) * 100}%`;
 }
 
+function nextRound() {
+  if (CONF_ROUNDS.includes(game.t) && !game.conf.some(c => c.t === game.t)) { showConfidence(); return; }
+  game.mode = "choose";
+  $("confidence").hidden = true; $("play").hidden = false;
+  game.tStart = performance.now();
+  if (document.activeElement && document.activeElement.classList.contains("cbtn")) $("card-0").focus({ preventScroll: true });
+}
+
+function showConfidence() {
+  game.mode = "confidence";
+  $("play").hidden = true; $("confidence").hidden = false;
+  $("conf-scale").querySelector(".mid").focus({ preventScroll: true });
+}
+
+function rate(btn) {
+  if (!game || game.mode !== "confidence") return;
+  game.conf.push({ t: game.t, v: parseFloat(btn.dataset.v), l: parseInt(btn.dataset.l, 10) });
+  game.fresh = true; // the next pick follows a pause, so its timing isn't counted
+  $("card-0").focus({ preventScroll: true });
+  nextRound();
+}
+$("conf-scale").querySelectorAll(".cbtn").forEach(b => b.addEventListener("click", () => rate(b)));
+
 function choose(c) {
-  if (!game || game.busy || game.paused || game.t >= N_TRIALS || views.game.hidden) return;
+  if (!game || game.busy || game.paused || game.mode !== "choose" || game.t >= N_TRIALS || views.game.hidden) return;
+  const rt = performance.now() - game.tStart;
   game.busy = true;
-  const r = game.trials[game.t].out[c];
+  const tr = game.trials[game.t], r = tr.out[c], ru = tr.out[1 - c];
   game.choices.push(c); game.rewards.push(r); game.points += r;
+  game.rts.push(rt); game.rtOk.push(!game.fresh && rt > 150 && rt < 8000);
+  game.fresh = false;
   const card = $("card-" + c), other = $("card-" + (1 - c));
-  card.querySelector(".back").innerHTML = r
-    ? `<span class="big">+1</span><span class="res">You won</span>`
-    : `<span class="big">✕</span><span class="res">No luck</span>`;
+  card.querySelector(".back").innerHTML = r ? `<span class="big">+1</span><span class="res">You won</span>` : `<span class="big">✕</span><span class="res">No luck</span>`;
+  other.querySelector(".back").innerHTML = ru ? `<span class="big">+1</span><span class="res">Would have won</span>` : `<span class="big">✕</span><span class="res">Would have lost</span>`;
   card.classList.add("flipped", r ? "win" : "miss");
-  other.classList.add("dim");
-  $("game-status").textContent = r ? "Win" : "No win";
+  other.classList.add("flipped", "ghost", ru ? "win" : "miss");
+  $("game-status").textContent = (r ? "Win. " : "No win. ") + (ru ? "The other card would have won." : "The other card would have lost.");
   if (r) { const s = $("hud-score"); s.classList.remove("pop"); void s.offsetWidth; s.classList.add("pop"); $("hud-points").textContent = game.points; }
-  setTimeout(() => card.classList.remove("flipped"), 620);
+  setTimeout(() => { card.classList.remove("flipped"); other.classList.remove("flipped"); }, 820);
   setTimeout(() => {
-    card.classList.remove("win", "miss"); other.classList.remove("dim");
+    card.classList.remove("win", "miss"); other.classList.remove("win", "miss", "ghost");
     game.t++; renderHud(); game.busy = false;
     if (game.t >= N_TRIALS) finish(false);
-    else if (game.t === N_STABLE) showHalfway();
-  }, 860);
+    else if (game.t === N_HALF) showHalfway();
+    else nextRound();
+  }, 1060);
 }
 
 function showHalfway() {
   game.paused = true;
   $("half-title").textContent = `${game.points} points so far`;
-  $("play").hidden = true; $("halfway").hidden = false;
+  $("play").hidden = true; $("confidence").hidden = true; $("halfway").hidden = false;
   $("btn-continue").focus({ preventScroll: true });
 }
 $("btn-continue").addEventListener("click", () => {
-  game.paused = false; $("halfway").hidden = true; $("play").hidden = false;
+  game.paused = false; game.fresh = true; $("halfway").hidden = true;
   $("card-0").focus({ preventScroll: true });
+  nextRound();
 });
 
 $("card-0").addEventListener("click", () => choose(0));
 $("card-1").addEventListener("click", () => choose(1));
 document.addEventListener("keydown", e => {
-  if (views.game.hidden || (game && game.paused)) return;
+  if (views.game.hidden || !game || game.paused) return;
+  if (game.mode === "confidence") {
+    const b = $("conf-scale").querySelector(`.cbtn[data-k="${e.key}"]`);
+    if (b) { e.preventDefault(); rate(b); }
+    return;
+  }
   if (e.key === "ArrowLeft" || e.key === "f" || e.key === "F") { e.preventDefault(); choose(0); }
   if (e.key === "ArrowRight" || e.key === "j" || e.key === "J") { e.preventDefault(); choose(1); }
 });
-$("btn-start").addEventListener("click", startGame);
+$("btn-start").addEventListener("click", () => { show("ready"); $("btn-ready").focus({ preventScroll: true }); });
+$("btn-ready").addEventListener("click", () => {
+  if (!$("ack").checked) {
+    $("ack-box").classList.add("err"); $("ack-err").hidden = false;
+    $("ack-box").scrollIntoView({ block: "center", behavior: reduceMotion ? "auto" : "smooth" });
+    $("ack").focus({ preventScroll: true });
+    return;
+  }
+  startGame();
+});
+$("ack").addEventListener("change", () => {
+  const on = $("ack").checked;
+  $("ack-box").classList.toggle("ok", on); $("ack-box").classList.remove("err");
+  if (on) $("ack-err").hidden = true;
+});
+$("btn-back").addEventListener("click", () => show("intro"));
 $("btn-example").addEventListener("click", () => {
   const rng = mulberry32(2026);
-  const trials = makeSchedule(rng);
-  const sim = simulatePlayer(trials, 0.18, 0.5, 6, rng);
-  game = { trials, choices: sim.choices, rewards: sim.rewards, points: sim.rewards.reduce((a, b) => a + b, 0) };
+  const trials = makeSchedule(rng, [0, 1]);
+  const sim = simulatePlayer(trials, 0.18, 0.5, 6, 0.5, rng);
+  const D = dataArrays(trials, sim.choices);
+  const p = modelTrace(D, 0.18, 0.5, 6, 0.5);
+  const noise = () => (rng() + rng() + rng() - 1.5);
+  const rts = p.map((q, t) => 560 + 700 * (1 - Math.abs(2 * q - 1)) + (t > 0 && D.rw[t - 1] === 0 ? 170 : 0) + 160 * noise());
+  const levels = [0.95, 0.8, 0.65, 0.5, 0.35, 0.2, 0.05];
+  const conf = CONF_ROUNDS.map(t => {
+    const target = Math.min(0.99, Math.max(0.01, p[t] + 0.15 * noise()));
+    const v = levels.reduce((best, x) => (Math.abs(x - target) < Math.abs(best - target) ? x : best), 0.5);
+    return { t, v, l: v === 0.5 ? 0 : Math.abs(v - 0.5) > 0.4 ? 3 : Math.abs(v - 0.5) > 0.25 ? 2 : 1 };
+  });
+  game = {
+    trials, choices: sim.choices, rewards: sim.rewards, points: sim.rewards.reduce((a, b) => a + b, 0),
+    rts, rtOk: rts.map((r, t) => t > 0 && !CONF_ROUNDS.includes(t) && t !== N_HALF), conf
+  };
   finish(true);
 });
 
@@ -577,6 +761,8 @@ function finish(isExample) {
 /* ---------- Plain-language helpers ---------- */
 const fmt = x => x.toFixed(2);
 const pct = a => Math.round(a * 100) + "%";
+const secs = ms => (ms / 1000).toFixed(2) + " s";
+const median = arr => { if (!arr.length) return null; const s = [...arr].sort((a, b) => a - b), m = s.length >> 1; return s.length % 2 ? s[m] : (s[m - 1] + s[m]) / 2; };
 
 const STYLES = {
   steady: {
@@ -607,7 +793,7 @@ function consistency(b) {
   return { word: "Barely", n: 1 };
 }
 
-// How many rounds it took to start picking the new lucky card after each switch.
+// Rounds it took to start picking the new lucky card after each switch.
 function catchUp(ch, good) {
   const switches = [];
   for (let t = 1; t < good.length; t++) if (good[t] !== good[t - 1]) switches.push(t);
@@ -621,19 +807,64 @@ function catchUp(ch, good) {
   return { avg: caught ? total / caught : null, caught, n: switches.length };
 }
 
+function hrow(label, value, max, cls, text) {
+  const w = value === null ? 0 : Math.max(4, (value / max) * 100);
+  return `<div class="hrow"><span class="t">${label}</span><span class="track2"><i class="${cls || ""}" style="width:${w.toFixed(1)}%"></i></span><span class="n">${text}</span></div>`;
+}
+
 function renderResults(isExample) {
-  const ch = game.choices, rw = game.rewards, blk = game.trials.map(t => t.block), good = game.trials.map(t => t.good);
-  const single = fitSingle(ch, rw, blk);
-  const split = fitSplit(ch, rw, blk);
+  const G = game, D = dataArrays(G.trials, G.choices), good = G.trials.map(t => t.good), ch = D.ch;
+  const single = fitSingle(D);
+  const split = fitSplit(D);
   const opt = bestAlphas();
   const acc = ch.filter((c, t) => c === good[t]).length / ch.length;
   const share0 = ch.filter(c => c === 0).length / ch.length;
-  const trace = modelTrace(ch, rw, blk, split.aS, split.aV, split.beta);
+  const trace = modelTrace(D, split.aS, split.aV, split.beta, split.w);
   const cu = catchUp(ch, good);
   const cons = consistency(single.beta);
   const st = STYLES[styleKey(single.alpha)];
   const you = !isExample;
-  const Y = you ? "you" : "it", You = you ? "You" : "It", your = you ? "your" : "its";
+  const Y = you ? "you" : "it", You = you ? "You" : "It", your = you ? "your" : "its", Your = you ? "Your" : "Its";
+
+  // --- Reaction time ---
+  const ok = G.rts.map((r, t) => (G.rtOk[t] ? t : -1)).filter(t => t >= 0);
+  const rtAll = median(ok.map(t => G.rts[t]));
+  const rtWin = median(ok.filter(t => t > 0 && D.rw[t - 1] === 1).map(t => G.rts[t]));
+  const rtLoss = median(ok.filter(t => t > 0 && D.rw[t - 1] === 0).map(t => G.rts[t]));
+  const unsureT = ok.filter(t => Math.abs(trace[t] - 0.5) < 0.2), sureT = ok.filter(t => Math.abs(trace[t] - 0.5) > 0.35);
+  const rtUnsure = unsureT.length >= 5 ? median(unsureT.map(t => G.rts[t])) : null;
+  const rtSure = sureT.length >= 5 ? median(sureT.map(t => G.rts[t])) : null;
+  const rtMax = Math.max(...[rtWin, rtLoss, rtUnsure, rtSure].filter(x => x !== null), 1);
+  let rtLine1 = "", rtLine2 = "";
+  if (rtWin !== null && rtLoss !== null) {
+    const d = rtLoss - rtWin;
+    rtLine1 = d > 60 ? `${You} slowed down after a loss, by about ${secs(d)}.` : d < -60 ? `${You} actually sped up after a loss, by about ${secs(-d)}.` : `Losses didn't change ${your} speed much.`;
+  }
+  if (rtUnsure !== null && rtSure !== null) {
+    const d = rtUnsure - rtSure;
+    rtLine2 = d > 80 ? `When the model thought ${Y} ${you ? "were" : "was"} torn between the cards, ${Y} took ${secs(d)} longer. ${Your} timing gave away ${your} uncertainty.` : `${Your} speed barely changed between torn and confident moments.`;
+  }
+
+  // --- Confidence ---
+  const rated = G.conf.map(c => ({ ...c, right: c.v === 0.5 ? null : (c.v > 0.5 ? good[c.t] === 0 : good[c.t] === 1) }));
+  const byLevel = l => { const r = rated.filter(c => c.l === l); return { n: r.length, right: r.filter(c => c.right).length }; };
+  const L3 = byLevel(3), L2 = byLevel(2), L1 = byLevel(1), L0 = byLevel(0);
+  const decided = rated.filter(c => c.right !== null);
+  const gutAcc = decided.length ? decided.filter(c => c.right).length / decided.length : null;
+  const agree = corr(rated.map(c => c.v), rated.map(c => trace[c.t]));
+  let gutVerdict;
+  if (!rated.length) gutVerdict = "No gut checks were recorded.";
+  else if (L3.n >= 3 && L3.right / L3.n < 0.7) gutVerdict = `${You} often felt sure but ${you ? "were" : "was"} wrong a fair amount. In this game, that's overconfidence.`;
+  else if (gutAcc !== null && gutAcc >= 0.8 && (L1.n + L0.n) >= rated.length / 2) gutVerdict = `${You} knew more than ${Y} thought. ${Your} hunches were right ${pct(gutAcc)} of the time, even when ${Y} only said "maybe."`;
+  else if (L3.n >= 2 && (L1.n === 0 || L3.right / L3.n > L1.right / L1.n)) gutVerdict = `${Your} confidence tracked reality: the surer ${Y} felt, the more often ${Y} ${you ? "were" : "was"} right.`;
+  else gutVerdict = `${Your} hunches were right ${gutAcc === null ? "–" : pct(gutAcc)} of the time when ${Y} picked a side.`;
+  const agreeLine = agree === null ? "" : agree > 0.6 ? `What ${Y} said closely matched what the model inferred from ${your} picks.` : agree > 0.3 ? `What ${Y} said partly matched what the model inferred from ${your} picks.` : `What ${Y} said and what ${Y} did told different stories: ${your} gut calls didn't line up with ${your} picks.`;
+
+  // --- Counterfactual ---
+  const w = single.w;
+  const cf = w >= 0.7 ? { cls: "yes", chip: "Almost as much", text: `${You} learned nearly as much from the card ${Y} didn't pick as from the one ${Y} did. That's the ideal: both cards tell you something.` }
+    : w >= 0.3 ? { cls: "maybe", chip: "Partly", text: `${You} paid some attention to what ${Y} missed, but weighted ${your} own picks more.` }
+    : { cls: "no", chip: "Barely", text: `${You} mostly learned from ${your} own picks and largely ignored what the other card would have done.` };
 
   const warnings = [];
   if (share0 > 0.95 || share0 < 0.05) warnings.push("You picked the same card almost every round, so there wasn't much to go on. Play again and try to win as many points as you can.");
@@ -641,18 +872,19 @@ function renderResults(isExample) {
 
   let v;
   if (split.vLo > split.sHi) v = { cls: "yes", chip: "Yes", text: `${You} clearly sped up when the lucky card started switching often. That's the smart move.` };
-  else if (split.sLo > split.vHi) v = { cls: "down", chip: "Slowed down", text: `${You} reacted more slowly once things got chaotic. In a changing world it usually pays to speed up.` };
-  else if (split.aV - split.aS > 0.1) v = { cls: "maybe", chip: "Probably", text: `${You} seemed to speed up once things got chaotic, but with this few rounds it's a close call.` };
-  else if (split.aS - split.aV > 0.1) v = { cls: "down", chip: "Maybe slowed", text: `${You} seemed to react a bit more slowly once things got chaotic, but it's a close call.` };
+  else if (split.sLo > split.vHi) v = { cls: "down", chip: "Slowed down", text: `${You} reacted more slowly when things got chaotic. In a changing world it usually pays to speed up.` };
+  else if (split.aV - split.aS > 0.1) v = { cls: "maybe", chip: "Probably", text: `${You} seemed to speed up when things got chaotic, but with this few rounds it's a close call.` };
+  else if (split.aS - split.aV > 0.1) v = { cls: "down", chip: "Maybe slowed", text: `${You} seemed to react a bit more slowly when things got chaotic, but it's a close call.` };
   else v = { cls: "no", chip: "Not really", text: `${You} kept about the same pace in both halves. Ideally, people speed up when things get unpredictable.` };
 
-  const ring = (frac) => {
+  const ring = frac => {
     const r = 22, c = 2 * Math.PI * r;
     return `<svg width="56" height="56" viewBox="0 0 56 56" aria-hidden="true"><circle cx="28" cy="28" r="${r}" fill="none" stroke="var(--soft)" stroke-width="7"/><circle cx="28" cy="28" r="${r}" fill="none" stroke="var(--win)" stroke-width="7" stroke-linecap="round" stroke-dasharray="${(c * frac).toFixed(1)} ${c.toFixed(1)}" transform="rotate(-90 28 28)"/></svg>`;
   };
 
-  const shareText = `${isExample ? "This sample player is" : "I'm"} a ${st.name} on Learning Rate Lab: each win or loss changed ${isExample ? "its" : "my"} mind by about ${pct(single.alpha)}, and ${isExample ? "it" : "I"} picked the better card ${Math.round(acc * 100)}% of the time.`;
+  const shareText = `${isExample ? "This sample player is" : "I'm"} a ${st.name} on Learning Rate Lab: each result changed ${isExample ? "its" : "my"} mind by about ${pct(single.alpha)}, ${isExample ? "it" : "I"} picked the better card ${Math.round(acc * 100)}% of the time${rtAll ? `, and ${isExample ? "its" : "my"} typical decision took ${secs(rtAll)}` : ""}.`;
 
+  const calmLater = !split.calmFirst;
   const body = $("results-body");
   body.innerHTML = `
     ${isExample ? `<p class="sample-flag"><strong>Sample result.</strong> This is a simulated player, not you. Play the game to get your own.</p>` : ""}
@@ -666,16 +898,20 @@ function renderResults(isExample) {
       </div>
       ${gauge(single.alpha)}
     </div>
-    ${warnings.map(w => `<p class="warn">${w}</p>`).join("")}
+    ${warnings.map(x => `<p class="warn">${x}</p>`).join("")}
 
     <div class="tiles">
       <div class="tile">
         <div class="row" style="justify-content:space-between;flex-wrap:nowrap"><span class="val">${Math.round(acc * 100)}%</span>${ring(acc)}</div>
-        <span class="lab">of rounds ${Y} picked the lucky card (${game.points} wins)</span>
+        <span class="lab">of rounds ${Y} picked the lucky card (${G.points} wins)</span>
       </div>
       <div class="tile">
         <span class="val">${cu.avg === null ? "–" : cu.avg.toFixed(1)}</span>
         <span class="lab">rounds, on average, to catch on after the lucky card switched (caught ${cu.caught} of ${cu.n})</span>
+      </div>
+      <div class="tile">
+        <span class="val">${rtAll === null ? "–" : secs(rtAll)}</span>
+        <span class="lab">typical time to make a pick</span>
       </div>
       <div class="tile">
         <span class="val" style="font-size:1.7rem">${cons.word}</span>
@@ -692,12 +928,12 @@ function renderResults(isExample) {
     <div class="panel">
       <span class="eyebrow">The chaos test</span>
       <h3>When the game got unpredictable, did ${Y} speed up?</h3>
-      <p class="muted">In the first half the lucky card switched once. In the second half it switched every dozen rounds or so. When things change often, reacting faster pays off.</p>
+      <p class="muted">In the calm half the lucky card switched once. In the chaotic half it switched every 10 to 14 rounds. ${You} played the chaotic half ${calmLater ? "first" : "second"}. When things change often, reacting faster pays off.</p>
       <span class="verdict ${v.cls}">${v.chip}</span>
       <p>${v.text}</p>
       <div class="pace">
         ${paceRow("Calm half", "1 switch", split.aS, split.sLo, split.sHi, opt.stable)}
-        ${paceRow("Chaotic half", "~6 switches", split.aV, split.vLo, split.vHi, opt.volatile)}
+        ${paceRow("Chaotic half", "~5 switches", split.aV, split.vLo, split.vHi, opt.volatile)}
         <div class="scale"><span></span><div><span>0%</span><span>25%</span><span>50%</span><span>75%</span><span>100%</span></div></div>
       </div>
       <div class="legend">
@@ -707,13 +943,53 @@ function renderResults(isExample) {
     </div>
 
     <div class="panel">
+      <span class="eyebrow">Missed chances</span>
+      <h3>Did ${Y} learn from the card ${Y} didn't pick?</h3>
+      <p class="muted">After every pick, the other card showed what it would have done. That's just as useful a clue as ${your} own result.</p>
+      <span class="verdict ${cf.cls}">${cf.chip}</span>
+      <p>${cf.text} For every bit ${Y} learned from ${your} own pick, ${Y} learned about <strong>${pct(w)}</strong> as much from the other card.</p>
+      <div class="pace">
+        ${paceRow("Missed card", "vs. picked", w, single.wLo, single.wHi, 1)}
+        <div class="scale"><span></span><div><span>ignored</span><span></span><span>half</span><span></span><span>equal</span></div></div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <span class="eyebrow">Gut check</span>
+      <h3>How well did ${Y} know ${your} own mind?</h3>
+      <p class="muted">Every 10 rounds ${Y} said which card ${Y} thought was lucky, and how sure ${Y} ${you ? "were" : "was"}. Here's how often each answer was right.</p>
+      <p><strong>${gutVerdict}</strong></p>
+      <div class="hbars">
+        ${hrow("Said “Sure”", L3.n ? L3.right / L3.n : null, 1, "ok", L3.n ? `${L3.right}/${L3.n}` : "none")}
+        ${hrow("Said “Likely”", L2.n ? L2.right / L2.n : null, 1, "ok", L2.n ? `${L2.right}/${L2.n}` : "none")}
+        ${hrow("Said “Maybe”", L1.n ? L1.right / L1.n : null, 1, "ok", L1.n ? `${L1.right}/${L1.n}` : "none")}
+      </div>
+      <p class="small muted">Bars show the share of answers that named the card that really was lucky at that moment.${L0.n ? ` ${You} said “No idea” ${L0.n} time${L0.n === 1 ? "" : "s"}.` : ""} ${agreeLine}</p>
+    </div>
+
+    <div class="panel">
+      <span class="eyebrow">Hesitation</span>
+      <h3>When did ${Y} slow down?</h3>
+      <p class="muted">Every pick was timed. People usually take longer when they're unsure, so timing is a window into confidence that doesn't require asking.</p>
+      <div class="hbars">
+        ${hrow("After a win", rtWin, rtMax, "", rtWin === null ? "–" : secs(rtWin))}
+        ${hrow("After a loss", rtLoss, rtMax, "alt", rtLoss === null ? "–" : secs(rtLoss))}
+        ${hrow("When torn between cards", rtUnsure, rtMax, "alt", rtUnsure === null ? "too few" : secs(rtUnsure))}
+        ${hrow("When clearly leaning one way", rtSure, rtMax, "", rtSure === null ? "too few" : secs(rtSure))}
+      </div>
+      <p>${rtLine1} ${rtLine2}</p>
+      <p class="small muted">"Torn" and "leaning" come from the model's read of each round. Picks right after a pause (the gut checks and the halfway break) aren't counted.</p>
+    </div>
+
+    <div class="panel">
       <span class="eyebrow">Replay</span>
       <h3>${you ? "Your" : "The"} game, round by round</h3>
-      <p class="muted small">The solid line shows which card ${Y} ${you ? "were" : "was"} leaning toward. The dashed line is the card that was secretly lucky. The faster the solid line follows a switch, the faster ${Y} caught on.</p>
-      <div class="chartwrap wide">${traceChart(ch, rw, good, trace)}</div>
+      <p class="muted small">The solid line shows which card ${Y} ${you ? "were" : "was"} leaning toward. The dashed line is the card that was secretly lucky. Yellow diamonds are ${your} gut checks: high means ${Y} said circle, low means triangle.</p>
+      <div class="chartwrap wide">${traceChart(D, good, trace, G.conf)}</div>
       <div class="legend">
         <span><svg width="22" height="10" aria-hidden="true"><line x1="0" y1="5" x2="22" y2="5" stroke="var(--ink)" stroke-width="2.5"/></svg>Leaning toward</span>
         <span><svg width="22" height="10" aria-hidden="true"><line x1="0" y1="5" x2="22" y2="5" stroke="var(--muted)" stroke-width="1.5" stroke-dasharray="4 3"/></svg>Lucky card</span>
+        <span><svg width="14" height="14" aria-hidden="true"><rect x="3" y="3" width="8" height="8" transform="rotate(45 7 7)" fill="var(--hi)" stroke="var(--ink)" stroke-width="1.2"/></svg>Gut check</span>
         <span><svg width="10" height="10" aria-hidden="true"><circle cx="5" cy="5" r="4" fill="var(--cobalt)"/></svg>Picked circle</span>
         <span><svg width="10" height="10" aria-hidden="true"><circle cx="5" cy="5" r="4" fill="var(--flame)"/></svg>Picked triangle</span>
         <span><svg width="10" height="10" aria-hidden="true"><circle cx="5" cy="5" r="3" fill="none" stroke="var(--muted)" stroke-width="1.5"/></svg>Hollow = no win</span>
@@ -725,16 +1001,17 @@ function renderResults(isExample) {
       <button class="btn" id="btn-copy">Copy ${you ? "my" : "this"} result</button>
       <span class="toast" id="copy-toast" aria-live="polite"></span>
     </div>
-    <p class="small muted">Five minutes of one game is a small sample, and people learn differently in different situations. This describes how ${Y} played this game, not a fixed trait.</p>
+    <p class="small muted">There are no right or wrong learning styles, and every mind is unique. This is a scientifically grounded demonstration, not an assessment: four minutes of one game is a small sample, and people learn differently on different days. It describes how ${Y} played this game, not a fixed trait.</p>
 
     <details class="panel">
       <summary>For the curious: the science behind it</summary>
       <div class="stack" style="margin-top:14px">
-        <p>Researchers call "how much each result changes your mind" the <strong>learning rate</strong>, written α. ${you ? "Yours" : "This player's"} was ${fmt(single.alpha)} overall: ${fmt(split.aS)} in the calm half and ${fmt(split.aV)} in the chaotic half. The model keeps a score for each card and updates the one picked after every round:</p>
-        <p class="formula">new score = old score + α × (result − old score)</p>
-        <p>A second number, β (${single.betaAtMax ? "30+" : single.beta.toFixed(1)}), measures how strictly ${Y} picked the higher-scoring card. The page tried ${(ALPHAS.length * ALPHAS.length * BETAS.length).toLocaleString()} combinations, replayed all 160 picks through each, and kept the one that best explained them. This is called maximum likelihood. The ideal pace is the α that best tracks each card's true win rate: ${fmt(opt.stable)} in the calm half and ${fmt(opt.volatile)} in the chaotic half. Adjusting your pace to how unstable the world is, is what researchers measure with models like the Hierarchical Gaussian Filter.</p>
+        <p>Researchers call "how much each result changes your mind" the <strong>learning rate</strong>, written α. ${you ? "Yours" : "This player's"} was ${fmt(single.alpha)} overall: ${fmt(split.aS)} in the calm half and ${fmt(split.aV)} in the chaotic half. The model keeps a score for each card. After each round it updates the picked card, and also the other card, scaled by a weight w:</p>
+        <p class="formula">picked: new = old + α × (result − old)<br>other: new = old + w × α × (its result − old)</p>
+        <p>w was ${fmt(w)}: 0 means the missed card was ignored, 1 means it counted as much as ${your} own pick. A third number, β (${single.betaAtMax ? "30+" : single.beta.toFixed(1)}), measures how strictly ${Y} picked the higher-scoring card. The page searched ${(ALPHAS.length * BETAS.length * WS.length).toLocaleString()} combinations for the overall fit and ${(ALPHAS_SPLIT.length ** 2 * BETAS.length * WS.length).toLocaleString()} for the calm-versus-chaotic fit, replayed every pick through each, and kept the combination that best explained them (maximum likelihood). The ideal pace is the α that best tracks each card's true win rate: ${fmt(opt.stable)} in the calm half and ${fmt(opt.volatile)} in the chaotic half.</p>
+        <p>Each game randomly puts the calm half first or second. Without that, a speed-up in the second half could just be warming up or getting bored. Reaction times and gut checks aren't used in the fit; they're compared with it afterwards.</p>
         <h3>Can these numbers be trusted?</h3>
-        <p>To check, the page can invent 40 pretend players with known learning rates, measure them the same way, and see whether it gets the right answers back.</p>
+        <p>To check, the page can invent 40 pretend players with known settings, measure them the same way, and see whether it gets the right answers back.</p>
         <div class="row"><button class="btn" id="btn-recovery">Run the check</button></div>
         <div id="recovery-out"></div>
       </div>
@@ -744,9 +1021,8 @@ function renderResults(isExample) {
   $("btn-recovery").addEventListener("click", runRecovery);
   $("btn-copy").addEventListener("click", () => {
     const toast = $("copy-toast");
-    try {
-      navigator.clipboard.writeText(shareText).then(() => { toast.textContent = "Copied"; }, () => { toast.textContent = shareText; });
-    } catch (e) { toast.textContent = shareText; }
+    try { navigator.clipboard.writeText(shareText).then(() => { toast.textContent = "Copied"; }, () => { toast.textContent = shareText; }); }
+    catch (e) { toast.textContent = shareText; }
   });
   $("fitting").hidden = true; body.hidden = false;
   animateIn(single.alpha);
@@ -775,7 +1051,7 @@ function runRecovery() {
     const rec = recovery();
     $("recovery-out").innerHTML = `
       <div class="chartwrap" style="max-width:340px">${recoveryChart(rec)}</div>
-      <p>Each dot is a pretend player. A perfect measurement would put every dot on the dashed line. ${rec.r > 0.8 ? "Most dots land close to it, so the measurement works." : "The dots are spread out, so take individual results with a grain of salt."} The gap between a dot and the line shows roughly how far off a single result can be. (Correlation r = ${rec.r.toFixed(2)}; 1.00 would be perfect.)</p>`;
+      <p>Each dot is a pretend player's learning rate. A perfect measurement would put every dot on the dashed line. ${rec.r > 0.8 ? "Most dots land close to it, so the learning rate is measured well." : "The dots are spread out, so take individual results with a grain of salt."} (Correlation r = ${rec.r.toFixed(2)}; 1.00 is perfect.) The missed-card weight is harder to pin down: r = ${rec.rW.toFixed(2)}, so read it as a rough band rather than an exact number.</p>`;
     btn.textContent = "Run it again"; btn.disabled = false;
   }, 30);
 }
@@ -790,7 +1066,6 @@ function gauge(alpha) {
   let s = `<svg class="gauge" viewBox="0 0 320 196" role="img" aria-label="Gauge from steady to quick, pointing at ${pct(alpha)}">`;
   zones.forEach(([a0, a1, k]) => {
     s += `<path d="${arc(a0 + 0.006, a1 - 0.006)}" fill="none" stroke="${k === active ? "var(--hi)" : "var(--deep-muted)"}" stroke-opacity="${k === active ? 1 : 0.28}" stroke-width="24"/>`;
-    const [lx, ly] = pt((a0 + a1) / 2, r + 0);
     const [tx, ty] = pt((a0 + a1) / 2, r - 40);
     s += `<text x="${tx.toFixed(1)}" y="${(ty + 4).toFixed(1)}" text-anchor="middle" style="fill:${k === active ? "var(--hi)" : "var(--deep-muted)"};font-size:12px;font-weight:500">${k}</text>`;
   });
@@ -814,24 +1089,30 @@ function paceRow(name, sub, a, lo, hi, ideal) {
   </div>`;
 }
 
-function traceChart(ch, rw, good, p) {
+function traceChart(D, good, p, conf) {
   const W = 680, H = 280, L = 62, R = 10, T = 40, B = 44;
-  const n = ch.length, iw = W - L - R, ih = H - T - B;
+  const n = D.ch.length, iw = W - L - R, ih = H - T - B;
   const x = t => L + (t + 0.5) * iw / n, y = v => T + (1 - v) * ih;
-  let s = `<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="Round by round: which card the player leaned toward, the secretly lucky card, and each pick">`;
-  s += `<rect x="${L + iw * N_STABLE / n}" y="${T - 18}" width="${iw * N_VOL / n}" height="${ih + 36}" rx="8" fill="var(--soft)"/>`;
-  s += `<text x="${L + iw * N_STABLE / n / 2}" y="12" text-anchor="middle">calm half</text>`;
-  s += `<text x="${L + iw * (N_STABLE + N_VOL / 2) / n}" y="12" text-anchor="middle">chaotic half</text>`;
+  const chaosStart = D.blk.indexOf(1), chaosEnd = D.blk.lastIndexOf(1) + 1;
+  const calmStart = D.blk.indexOf(0), calmEnd = D.blk.lastIndexOf(0) + 1;
+  let s = `<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="Round by round: which card the player leaned toward, the secretly lucky card, each pick, and each gut check">`;
+  s += `<rect x="${L + iw * chaosStart / n}" y="${T - 18}" width="${iw * (chaosEnd - chaosStart) / n}" height="${ih + 36}" rx="8" fill="var(--soft)"/>`;
+  s += `<text x="${L + iw * (calmStart + calmEnd) / 2 / n}" y="12" text-anchor="middle">calm half</text>`;
+  s += `<text x="${L + iw * (chaosStart + chaosEnd) / 2 / n}" y="12" text-anchor="middle">chaotic half</text>`;
   [[0, "triangle"], [0.5, "unsure"], [1, "circle"]].forEach(([v, lab]) => { s += `<line class="ax" x1="${L}" y1="${y(v)}" x2="${W - R}" y2="${y(v)}"/><text x="${L - 6}" y="${y(v) + 4}" text-anchor="end">${lab}</text>`; });
-  [1, 40, 80, 120, 160].forEach(t => { s += `<text x="${x(t - 1)}" y="${H - 8}" text-anchor="middle">${t === 1 ? "round 1" : t}</text>`; });
+  [1, 30, 60, 90, 120].forEach(t => { s += `<text x="${x(t - 1)}" y="${H - 8}" text-anchor="middle">${t === 1 ? "round 1" : t}</text>`; });
   let truth = "";
   good.forEach((g, t) => { const yy = y(g === 0 ? P_GOOD : 1 - P_GOOD); truth += (t === 0 ? "M" : "L") + (L + t * iw / n) + " " + yy + " L" + (L + (t + 1) * iw / n) + " " + yy + " "; });
   s += `<path d="${truth}" fill="none" stroke="var(--muted)" stroke-width="1.5" stroke-dasharray="4 3"/>`;
   s += `<path d="${p.map((v, t) => (t ? "L" : "M") + x(t).toFixed(1) + " " + y(v).toFixed(1)).join(" ")}" fill="none" stroke="var(--ink)" stroke-width="2.5" stroke-linejoin="round"/>`;
-  ch.forEach((c, t) => {
+  D.ch.forEach((c, t) => {
     const cy = c === 0 ? T - 10 : T + ih + 10;
     const col = c === 0 ? "var(--cobalt)" : "var(--flame)";
-    s += rw[t] ? `<circle cx="${x(t).toFixed(1)}" cy="${cy}" r="2.8" fill="${col}"/>` : `<circle cx="${x(t).toFixed(1)}" cy="${cy}" r="2.3" fill="none" stroke="${col}" stroke-width="1"/>`;
+    s += D.rw[t] ? `<circle cx="${x(t).toFixed(1)}" cy="${cy}" r="2.8" fill="${col}"/>` : `<circle cx="${x(t).toFixed(1)}" cy="${cy}" r="2.3" fill="none" stroke="${col}" stroke-width="1"/>`;
+  });
+  (conf || []).forEach(c => {
+    const cx = x(c.t), cy = y(c.v);
+    s += `<rect x="${(cx - 5).toFixed(1)}" y="${(cy - 5).toFixed(1)}" width="10" height="10" transform="rotate(45 ${cx.toFixed(1)} ${cy.toFixed(1)})" fill="var(--hi)" stroke="var(--ink)" stroke-width="1.2"/>`;
   });
   return s + `</svg>`;
 }
